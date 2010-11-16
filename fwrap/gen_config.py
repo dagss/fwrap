@@ -189,7 +189,7 @@ class _ConfigTypeParam(object):
 
     c_includes = ''
 
-    pxd_cimports = ''
+    pxd_cimports = ['cimport numpy as np']
 
     def __init__(self, basetype, odecl, fwrap_name, npy_enum):
         self.basetype = basetype
@@ -218,14 +218,24 @@ class _ConfigTypeParam(object):
 
     def gen_c_typedef(self):
         self.check_init()
-        return ['typedef %s %s;' % (f2c[self.fc_type], self.fwrap_name)]
+        if self.lang == 'c':
+            # In particular, npy_intp
+            return ['typedef %s %s;' % (self.odecl, self.fwrap_name)]
+        else:
+            return ['typedef %s %s;' % (f2c[self.fc_type], self.fwrap_name)]
 
     def gen_pxd_extern_extra(self):
         return []
 
     def gen_pxd_extern_typedef(self):
         self.check_init()
-        return ['ctypedef %s %s' % (f2c[self.fc_type], self.fwrap_name)]
+        if self.lang == 'c':
+            decl = self.odecl
+            if decl.startswith('npy'):
+                decl = 'np.' + decl
+            return ['ctypedef %s %s' % (decl, self.fwrap_name)]
+        else:
+            return ['ctypedef %s %s' % (f2c[self.fc_type], self.fwrap_name)]
 
     def gen_pyx_type_obj(self):
         self.check_init()
@@ -343,7 +353,7 @@ f2c = {
     'c_double_complex'  : 'double _Complex',
     'c_long_double_complex' : 'long double _Complex',
     'c_bool'            : '_Bool',
-    'c_char'            : 'char',
+    'c_char'            : 'char'
     }
 
 c2f = dict([(y,x) for (x,y) in f2c.items()])
