@@ -76,8 +76,8 @@ def call_waf(opts, args, orig_args):
 
     py_exe = sys.executable
 
-#    waf_path = os.path.join(proj_dir(opts.outdir), 'waf')
-    waf_path = '/home/dagss/code/waf/waf-light'
+    waf_path = os.path.join(proj_dir(opts.outdir), 'waf')
+#    waf_path = '/home/dagss/code/waf/waf-light'
 
     cmd = [py_exe, waf_path] + orig_args + ['-v', '--zones=runner']
     odir = os.path.abspath(os.curdir)
