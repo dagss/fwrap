@@ -63,7 +63,7 @@ def build_cb(opts, args, argv):
     if opts.pyf:
         srcs.append(os.path.abspath(opts.pyf))
 
-    dst = os.path.join(proj_dir(opts.outdir), 'src')
+    dst = opts.outdir#os.path.join(proj_dir(opts.outdir), 'src')
     for src in srcs:
         shutil.copy(src, dst)
 
@@ -76,9 +76,10 @@ def call_waf(opts, args, orig_args):
 
     py_exe = sys.executable
 
-    waf_path = os.path.join(proj_dir(opts.outdir), 'waf')
+#    waf_path = os.path.join(proj_dir(opts.outdir), 'waf')
+    waf_path = '/home/dagss/code/waf/waf-light'
 
-    cmd = [py_exe, waf_path] + orig_args
+    cmd = [py_exe, waf_path] + orig_args + ['-v', '--zones=runner']
     odir = os.path.abspath(os.curdir)
     os.chdir(proj_dir(opts.outdir))
     try:

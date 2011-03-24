@@ -980,7 +980,7 @@ class CyCallbackArg(_CyArg):
             exprs = [parse_sizeexpr(d.sizeexpr) for d in dim.dims]
             buf.putln('; '.join('%s_shape[%d] = %s' % (arg.name, idx, expr)
                                 for idx, expr in enumerate(exprs)))
-            buf.putln('%(intern)s = np.PyArray_New(&np.PyArray_Type, %(ndim)d, '
+            buf.putln('%(intern)s = np.PyArray_New(np.PyArray_Type, %(ndim)d, '
                       '%(shape)s, %(enum)s, NULL, <char*>%(extern)s, 0, '
                       'np.NPY_FARRAY, NULL)' % dict(intern=intern,
                                                     extern=extern,

@@ -5,7 +5,7 @@ from waflib import TaskGen
 
 TaskGen.declare_chain(
         name = "cython",
-        rule = "${CYTHON} ${CYTHONFLAGS} ${CPPPATH_ST:INCPATHS} ${SRC} -o ${TGT}",
+        rule = "${CYTHON} --fast-fail ${CYTHONFLAGS} ${CPPPATH_ST:INCPATHS} ${SRC} -o ${TGT}",
         ext_in = ['.pyx'],
         ext_out = ['.c'],
         reentrant = True,
